@@ -1,24 +1,24 @@
-import { CallbackHandler } from "supertest";
-import moment from "moment";
-import logger from "jet-logger";
+import { CallbackHandler } from 'supertest'
+import moment from 'moment'
+import logger from 'jet-logger'
 
-import { TApiCb, TRes } from "spec/types/misc";
+import { TApiCb, TRes } from 'spec/types/misc'
 
 /**
  * API callback function.
  */
 function apiCb(
   cb: TApiCb,
-  dateParam = "created",
+  dateParam = 'created',
   printErr?: boolean,
 ): CallbackHandler {
   return (err: Error, res: TRes) => {
     if (printErr) {
-      logger.err(err);
+      logger.err(err)
     }
-    _strToDate(res.body, dateParam);
-    return cb(res);
-  };
+    _strToDate(res.body, dateParam)
+    return cb(res)
+  }
 }
 
 /**
@@ -27,45 +27,45 @@ function apiCb(
  * convert them back to Date objects.
  */
 function _strToDate(param: unknown, prop: string): void {
-  return _iterate(param, prop);
+  return _iterate(param, prop)
 }
 
 /**
  * Interate object recursively and convert string-dates to "Date" objects.
  */
 function _iterate(param: unknown, prop: string): void {
-  if (!param || typeof param !== "object") {
-    return;
+  if (!param || typeof param !== 'object') {
+    return
   }
-  const paramF = param as Record<string, unknown>;
+  const paramF = param as Record<string, unknown>
   // For Arrays
   if (Array.isArray(paramF)) {
     for (const item of paramF) {
-      _iterate(item, prop);
+      _iterate(item, prop)
     }
-    return;
+    return
   }
   // Check valid string or Date object. If undefined just skip
-  const val = paramF[prop];
+  const val = paramF[prop]
   if (
-    typeof val !== "undefined" &&
-    !(typeof val === "string" || val instanceof Date) &&
+    typeof val !== 'undefined' &&
+    !(typeof val === 'string' || val instanceof Date) &&
     !moment(val as string | Date).isValid()
   ) {
-    throw new Error("Property must be a valid date-string or Date() object");
+    throw new Error('Property must be a valid date-string or Date() object')
   }
   // Convert and iterate
-  if (typeof val !== "undefined") {
-    paramF[prop] = new Date(val as string | Date);
+  if (typeof val !== 'undefined') {
+    paramF[prop] = new Date(val as string | Date)
   }
   for (const key in paramF) {
-    const oval = paramF[key];
-    if (typeof oval === "object" && key !== prop) {
-      _iterate(oval, prop);
+    const oval = paramF[key]
+    if (typeof oval === 'object' && key !== prop) {
+      _iterate(oval, prop)
     }
   }
 }
 
 // **** Export default **** //
 
-export default apiCb;
+export default apiCb
