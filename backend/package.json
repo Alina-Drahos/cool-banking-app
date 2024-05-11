@@ -8,7 +8,8 @@
     "start": "node -r module-alias/register ./dist --env=production",
     "dev": "nodemon",
     "test": "nodemon --config ./spec/nodemon.json",
-    "test:no-reloading": "npx ts-node --files -r tsconfig-paths/register ./spec"
+    "test:no-reloading": "npx ts-node --files -r tsconfig-paths/register ./spec",
+    "prepare": "husky"
   },
   "nodemonConfig": {
     "watch": [
@@ -25,6 +26,9 @@
   },
   "engines": {
     "node": ">=8.10.0"
+  },
+  "lint-staged": {
+    "**/*": "prettier --write --ignore-unknown"
   },
   "dependencies": {
     "cookie-parser": "^1.4.6",
@@ -55,11 +59,15 @@
     "@typescript-eslint/eslint-plugin": "^7.8.0",
     "@typescript-eslint/parser": "^7.8.0",
     "eslint": "^8.57.0",
+    "eslint-config-prettier": "^9.1.0",
     "eslint-plugin-node": "^11.1.0",
     "find": "^0.3.0",
     "fs-extra": "^11.2.0",
+    "husky": "^9.0.11",
     "jasmine": "^5.1.0",
+    "lint-staged": "^15.2.2",
     "nodemon": "^3.1.0",
+    "prettier": "3.2.5",
     "supertest": "^7.0.0",
     "ts-node": "^10.9.2",
     "tsconfig-paths": "^4.2.0",

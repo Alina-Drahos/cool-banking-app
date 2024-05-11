@@ -2,7 +2,6 @@
  * Express router paths go here.
  */
 
-
 export default {
   Base: '/api',
   Users: {
@@ -12,4 +11,4 @@ export default {
     Update: '/update',
     Delete: '/delete/:id',
   },
-} as const;
+} as const
