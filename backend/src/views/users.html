@@ -1,9 +1,8 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-
   <!-- Head -->
   <head>
-    <meta charset="UTF-8">
+    <meta charset="UTF-8" />
     <title>Users</title>
     <link rel="stylesheet" type="text/css" href="/stylesheets/users.css" />
 
@@ -26,12 +25,9 @@
 
   <!-- Body -->
   <body>
-
     <!-- Add Users -->
     <div class="users-column add-user-col">
-      <div class="column-header">
-        Add User:
-      </div>
+      <div class="column-header">Add User:</div>
       <div>
         <input
           id="name-input"
@@ -49,26 +45,16 @@
         />
       </div>
       <div>
-        <button
-          id="add-user-btn"
-          class="btn btn-success"
-        >
-          Add
-        </button>
+        <button id="add-user-btn" class="btn btn-success">Add</button>
       </div>
     </div>
 
     <!-- Display Users -->
     <div class="users-column">
-      <div class="column-header">
-        Users:
-      </div>
+      <div class="column-header">Users:</div>
 
       <div id="all-users-anchor"></div>
-      <script
-        id="all-users-template"
-        type="text/x-handlebars-template"
-      >
+      <script id="all-users-template" type="text/x-handlebars-template">
         {{#each users}}
           <div class="user-display-ele">
             <div class="normal-view">
