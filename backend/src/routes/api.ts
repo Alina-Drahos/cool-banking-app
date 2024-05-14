@@ -4,15 +4,18 @@ import jetValidator from 'jet-validator'
 import Paths from '../constants/Paths'
 import User from '@src/models/User'
 import UserRoutes from './UserRoutes'
+import BankingRoutes from './BankingRoutes'
 
 // **** Variables **** //
 
 const apiRouter = Router(),
   validate = jetValidator()
-
-// ** Add UserRouter ** //
-
+  
+  // ** Add UserRouter and BankingRouter** //
+  
 const userRouter = Router()
+  
+const bankingRouter = Router()
 
 // Get all users
 userRouter.get(Paths.Users.Get, UserRoutes.getAll)
@@ -38,8 +41,16 @@ userRouter.delete(
   UserRoutes.delete,
 )
 
-// Add UserRouter
+
+bankingRouter.get(Paths.Banking.Get, BankingRoutes.get)
+
+bankingRouter.put(Paths.Banking.Put, BankingRoutes.put)
+
+// Add UserRouter & BankingRouter
 apiRouter.use(Paths.Users.Base, userRouter)
+apiRouter.use(Paths.Banking.Base, bankingRouter)
+
+
 
 // **** Export default **** //
 
