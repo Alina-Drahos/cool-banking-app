@@ -10,10 +10,8 @@ import BankingRoutes from './BankingRoutes'
 
 const apiRouter = Router(),
   validate = jetValidator()
-
-
   
-  // ** Add UserRouter ** //
+  // ** Add UserRouter and BankingRouter** //
   
 const userRouter = Router()
   
@@ -48,7 +46,7 @@ bankingRouter.get(Paths.Banking.Get, BankingRoutes.get)
 
 bankingRouter.put(Paths.Banking.Put, BankingRoutes.put)
 
-// Add UserRouter
+// Add UserRouter & BankingRouter
 apiRouter.use(Paths.Users.Base, userRouter)
 apiRouter.use(Paths.Banking.Base, bankingRouter)
 
