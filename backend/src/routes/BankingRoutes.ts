@@ -26,7 +26,6 @@ const PLAID_COUNTRY_CODES = (process.env.PLAID_COUNTRY_CODES || 'US').split(
 
 // Initialize the Plaid client
 // Find your API keys in the Dashboard (https://dashboard.plaid.com/account/keys)
-
 const configuration = new Configuration({
   basePath: PlaidEnvironments[PLAID_ENV],
   baseOptions: {
@@ -42,8 +41,6 @@ const client = new PlaidApi(configuration);
 
 // Retrieve the Link Token from Plaid
 async function get(_: IReq, res: IRes) {
-    //res.send("I am outputing a Link Token");
-
     const configs = {
       user: {
         // This should correspond to a unique id for the current user.
@@ -56,7 +53,6 @@ async function get(_: IReq, res: IRes) {
     };
 
     const createTokenResponse = await client.linkTokenCreate(configs);
-    //prettyPrintResponse(createTokenResponse);
     res.json(createTokenResponse.data);
   }
 
