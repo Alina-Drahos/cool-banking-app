@@ -1,5 +1,6 @@
 ﻿# cool-banking-app
-Environment Variable:
-Please retrieve the variable from the QuickStart sample app.
-Your client id and your secret id should be uniquly generated and
-can be retrieved from the PLAID Dashboard once you are logged in
+Backend Part:
+Please look for instructions in the README.md file located in the backend folder
+
+Frontend Part:
+Please look for instructions in the README.md file located in the frontend folder
