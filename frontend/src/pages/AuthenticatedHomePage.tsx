@@ -1,3 +1,6 @@
+import { useState } from "react";
+import { LinkTokenData } from "../Context";
+
 import {
   Box,
   Drawer,
@@ -9,10 +12,22 @@ import {
   Typography,
 } from '@mui/material'
 
+
+
+
 export function AuthenticatedHomePage() {
-  const connectBankClicked = () => {
-    alert("Let's connect your bank!")
-    // TODO: Open the Link widget here.
+
+  //Store the LinkToken
+  const[LinkToken, setLinkToken] = useState<LinkTokenData>();
+  
+  // Retrieve Link Token from Backend and log it in the browser
+  const connectBankClicked = async () => {
+    const response = await fetch(
+      'http://localhost:3000/api/banking/create_link_token',
+      { method: 'Get' },
+    )
+    const linkData = await response.json() as LinkTokenData;
+    setLinkToken(linkData);
   }
 
   return (

@@ -1,4 +1,4 @@
-export interface IPublicToken{
-    publicToken: string,
-    dirtyToken : number
-  }
+export interface IPublicToken {
+  publicToken: string
+  dirtyToken: number
+}
