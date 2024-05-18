@@ -3,23 +3,24 @@ import { IReq, IRes } from './types/express/misc';
 import { BankingRoutesLinkData } from '@src/Context';
 
 
+
 require('dotenv').config();
 const { Configuration, PlaidApi, Products, PlaidEnvironments} = require('plaid');
 
 
 const PLAID_CLIENT_ID = process.env.PLAID_CLIENT_ID;
 const PLAID_SECRET = process.env.PLAID_SECRET;
-const PLAID_ENV = 'sandbox';
+const PLAID_ENV =  'sandbox';
 
 // PLAID_PRODUCTS is a comma-separated list of products to use when initializing
 // Link. Note that this list must contain 'assets' in order for the app to be
 // able to create and retrieve asset reports.
-const PLAID_PRODUCTS = ['auth,transactions'];
+const PLAID_PRODUCTS = ["auth","transactions"];
 
 
 // PLAID_COUNTRY_CODES is a comma-separated list of countries for which users
 // will be able to select institutions from.
-const PLAID_COUNTRY_CODES = ['US,CA'];
+const PLAID_COUNTRY_CODES = ["US","CA"];
 
 // Initialize the Plaid client
 // Find your API keys in the Dashboard (https://dashboard.plaid.com/account/keys)
@@ -61,7 +62,8 @@ async function get(_: IReq, res: IRes) {
 
     const createTokenResponse = await client.linkTokenCreate(configs);
     const data = createTokenResponse.data as BankingRoutesLinkData;
-    res.json(data.linkToken);
+    console.log(data);
+    res.json(data);
   }
 
   async function put(req: IReq< IPublicToken>, res: IRes){

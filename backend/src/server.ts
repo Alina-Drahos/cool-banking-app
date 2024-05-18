@@ -20,9 +20,14 @@ import HttpStatusCodes from '@src/constants/HttpStatusCodes'
 import { NodeEnvs } from '@src/constants/misc'
 import { RouteError } from '@src/other/classes'
 
+
+
+
 // **** Variables **** //
 
 const app = express()
+const cors = require('cors');
+app.use(cors());
 
 // **** Setup **** //
 
