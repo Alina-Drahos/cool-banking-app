@@ -5,7 +5,7 @@ export interface LogInProps {
   buttonClicked: () => void
 }
 
-export function LogIn(props:LogInProps) {
+export function LogIn(props: LogInProps) {
   return (
     <Box className="LogInContainer">
       <Stack spacing={2}>

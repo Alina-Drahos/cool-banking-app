@@ -11,9 +11,9 @@ export default {
     Update: '/update',
     Delete: '/delete/:id',
   },
-  Banking:{
+  Banking: {
     Base: '/banking',
-    Get:'/create_link_token',
-    Put:'/send_public_token'
-  }
+    Get: '/create_link_token',
+    Put: '/send_public_token',
+  },
 } as const
