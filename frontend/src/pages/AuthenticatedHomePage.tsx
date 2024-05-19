@@ -14,12 +14,13 @@ import {
 } from '@mui/material'
 
 export function AuthenticatedHomePage() {
+
   //Store the LinkToken
   const [LinkToken, setLinkToken] = useState<LinkTokenData>()
 
   const config: Parameters<typeof usePlaidLink>[0] = {
     token: LinkToken?.link_token!,
-    onSuccess : (token:string, metadata: PlaidLinkOnSuccessMetadata)=>{ console.log(`Token: ${token}`) },
+    onSuccess : (token:string, metadata: PlaidLinkOnSuccessMetadata)=>{ alert(`Token: ${token}`) },
   }
   
   const { open, ready } = usePlaidLink(config)
