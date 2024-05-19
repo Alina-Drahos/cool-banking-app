@@ -1,5 +1,6 @@
-import { useState } from "react";
-import { LinkTokenData } from "../Context";
+import { useEffect, useState } from 'react'
+import { LinkTokenData } from '../Context'
+import { usePlaidLink } from 'react-plaid-link'
 
 import {
   Box,
@@ -12,13 +13,25 @@ import {
   Typography,
 } from '@mui/material'
 
-
-
-
 export function AuthenticatedHomePage() {
-
   //Store the LinkToken
-  const[LinkToken, setLinkToken] = useState<LinkTokenData>();
+  const [LinkToken, setLinkToken] = useState<LinkTokenData>()
+
+  const onSuccess=(_props: string) =>{};
+  
+  useEffect(() => {
+    
+    const config: Parameters<typeof usePlaidLink>[0] = {
+      token: LinkToken?.link_token!,
+      onSuccess,
+    }
+     const { open, ready } = usePlaidLink(config)
+    
+    if(ready){
+      open();
+    }
+    
+  }, [LinkToken]);
   
   // Retrieve Link Token from Backend and log it in the browser
   const connectBankClicked = async () => {
@@ -26,8 +39,8 @@ export function AuthenticatedHomePage() {
       'http://localhost:3000/api/banking/create_link_token',
       { method: 'Get' },
     )
-    const linkData = await response.json() as LinkTokenData;
-    setLinkToken(linkData);
+    const linkData = (await response.json()) as LinkTokenData
+    setLinkToken(linkData)
   }
 
   return (
