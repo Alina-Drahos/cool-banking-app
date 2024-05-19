@@ -18,20 +18,17 @@ export function AuthenticatedHomePage() {
   const [LinkToken, setLinkToken] = useState<LinkTokenData>()
 
   const onSuccess=(_props: string) =>{};
-  
-  useEffect(() => {
-    
-    const config: Parameters<typeof usePlaidLink>[0] = {
-      token: LinkToken?.link_token!,
-      onSuccess,
-    }
-     const { open, ready } = usePlaidLink(config)
-    
-    if(ready){
-      open();
-    }
-    
-  }, [LinkToken]);
+
+  const config: Parameters<typeof usePlaidLink>[0] = {
+    token: LinkToken?.link_token!,
+    onSuccess,
+  }
+
+  const { open, ready } = usePlaidLink(config)
+
+  if(ready){
+    open();
+  }
   
   // Retrieve Link Token from Backend and log it in the browser
   const connectBankClicked = async () => {
