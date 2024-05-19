@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import { LinkTokenData } from '../Context'
-import { usePlaidLink } from 'react-plaid-link'
+import { PlaidLinkOnSuccessMetadata, usePlaidLink } from 'react-plaid-link'
 
 import {
   Box,
@@ -17,18 +17,20 @@ export function AuthenticatedHomePage() {
   //Store the LinkToken
   const [LinkToken, setLinkToken] = useState<LinkTokenData>()
 
-  const onSuccess=(_props: string) =>{};
-
   const config: Parameters<typeof usePlaidLink>[0] = {
     token: LinkToken?.link_token!,
-    onSuccess,
+    onSuccess : (token:string, metadata: PlaidLinkOnSuccessMetadata)=>{ console.log(`Token: ${token}`) },
   }
-
+  
   const { open, ready } = usePlaidLink(config)
 
-  if(ready){
-    open();
-  }
+
+
+  useEffect(() => {
+    if (ready) {
+      open();
+    }
+  }, [ready, open]);
   
   // Retrieve Link Token from Backend and log it in the browser
   const connectBankClicked = async () => {
