@@ -1,6 +1,7 @@
 import { IPublicToken } from '@src/models/Banking'
 import { IReq, IRes } from './types/express/misc'
 import { BankingRoutesLinkData } from '@src/Context'
+const util = require('util')
 
 require('dotenv').config()
 const {
@@ -13,6 +14,8 @@ const {
 const PLAID_CLIENT_ID = process.env.PLAID_CLIENT_ID
 const PLAID_SECRET = process.env.PLAID_SECRET
 const PLAID_ENV = 'sandbox'
+
+let ACCESS_TOKEN = null
 
 // PLAID_PRODUCTS is a comma-separated list of products to use when initializing
 // Link. Note that this list must contain 'assets' in order for the app to be
@@ -65,10 +68,18 @@ async function get(_: IReq, res: IRes) {
   console.log(data)
   res.json(data)
 }
+const prettyPrintResponse = (response: any) => {
+  console.log(util.inspect(response.data, { colors: true, depth: 4 }))
+}
+// Send the Public Token to Plaid in exchange for an "Access Token"
 
 async function put(req: IReq<IPublicToken>, res: IRes) {
-  console.log(req.body)
-  res.send(JSON.stringify(req.body.publicToken))
+  const tokenResponse = await client.itemPublicTokenExchange({
+    public_token: req.body.publicToken,
+  })
+
+  prettyPrintResponse(tokenResponse)
+  ACCESS_TOKEN = tokenResponse.data.access_token
 }
 
 export default {
