@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import { LinkTokenData } from '../Context'
-import { PlaidLinkOnSuccessMetadata, usePlaidLink } from 'react-plaid-link'
+import { usePlaidLink } from 'react-plaid-link'
 
 import {
   Box,
@@ -19,8 +19,16 @@ export function AuthenticatedHomePage() {
 
   const config: Parameters<typeof usePlaidLink>[0] = {
     token: LinkToken?.link_token!,
-    onSuccess: (token: string, metadata: PlaidLinkOnSuccessMetadata) => {
-      alert(`Token: ${token}`)
+    onSuccess: async (token: string) => {
+
+        const response = await fetch("http://localhost:3000/api/banking/send_public_token", {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({publicToken:`${token}`})
+        });
+        console.log(await response.json());
     },
   }
 
