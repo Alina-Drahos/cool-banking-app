@@ -48,6 +48,7 @@
     "plaid": "^23.0.0",
     "pretty-print-json": "^3.0.1",
     "react-plaid-link": "^3.5.1",
+    "sqlite3": "^5.1.7",
     "ts-command-line-args": "^2.5.1"
   },
   "devDependencies": {
