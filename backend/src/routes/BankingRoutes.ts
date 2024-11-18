@@ -1,4 +1,5 @@
 import { IPublicToken } from '@src/models/Banking'
+import { IAccessToken } from '@src/models/AccessToken'
 import { IReq, IRes } from './types/express/misc'
 import { BankingRoutesLinkData } from '@src/Context'
 import { database } from '@src/server'
@@ -17,7 +18,7 @@ const PLAID_CLIENT_ID = process.env.PLAID_CLIENT_ID
 const PLAID_SECRET = process.env.PLAID_SECRET
 const PLAID_ENV = 'sandbox'
 
-let ACCESS_TOKEN:string = '';
+
 
 // PLAID_PRODUCTS is a comma-separated list of products to use when initializing
 // Link. Note that this list must contain 'assets' in order for the app to be
@@ -81,7 +82,8 @@ async function put(req: IReq<IPublicToken>, res: IRes) {
   })
 
   prettyPrintResponse(tokenResponse)
-  ACCESS_TOKEN = tokenResponse.data.access_token as string;
+  let access_token:string = '';
+  access_token = tokenResponse.data.access_token as string;
   
   database.serialize(() => {
     database.run('DELETE FROM accessToken', function(err:Error) {
@@ -93,7 +95,7 @@ async function put(req: IReq<IPublicToken>, res: IRes) {
   });
     database.run(
         'INSERT INTO accessToken (accesstoken) VALUES (?)',
-        [ACCESS_TOKEN],
+        [access_token],
         (err: Error) => {
             if (err) {
                 // Handle error
@@ -106,7 +108,7 @@ async function put(req: IReq<IPublicToken>, res: IRes) {
         }
     );
     const sqlQuery = 'SELECT * FROM accessToken';
-    database.all<any>(sqlQuery, (err: Error | null, rows: any[]) => {
+    database.all<IAccessToken>(sqlQuery, (err: Error | null, rows: IAccessToken[]) => {
       if (err) {
           // Handle query error
           console.error('Error executing query:', err.message);

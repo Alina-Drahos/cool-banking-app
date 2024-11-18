@@ -24,7 +24,6 @@ import { Database } from 'sqlite3'
 // **** Variables **** //
 const app = express()
 const cors = require('cors')
-//const sqlite3 = require('sqlite3').verbose(); // verbose mode for detailed stack traces
 let sql;
 app.use(cors())
 
@@ -36,9 +35,8 @@ app.use(express.urlencoded({ extended: true }))
 app.use(cookieParser(EnvVars.CookieProps.Secret))
 
 
-// Create a connection to the database
 // Create connection to SQLite database
-export const database = new Database('./database.db', (err:any) => {
+export const database = new Database('./database.db', (err) => {
   if (err) {
     console.error('Error connecting to database:', err.message);
   } else {
@@ -58,11 +56,6 @@ const db = function DatabaseTable(){
 }
 
 db();
-/*const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => {
-  console.log(`Server is running on http://localhost:${PORT}`);
-});
-*/
 // Show routes called in console during development
 if (EnvVars.NodeEnv === NodeEnvs.Dev.valueOf()) {
   app.use(morgan('dev'))
