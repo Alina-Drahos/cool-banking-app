@@ -19,10 +19,12 @@ import HttpStatusCodes from '@src/constants/HttpStatusCodes'
 
 import { NodeEnvs } from '@src/constants/misc'
 import { RouteError } from '@src/other/classes'
+import { Database } from 'sqlite3'
 
 // **** Variables **** //
 const app = express()
 const cors = require('cors')
+let sql;
 app.use(cors())
 
 // **** Setup **** //
@@ -32,6 +34,28 @@ app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
 app.use(cookieParser(EnvVars.CookieProps.Secret))
 
+
+// Create connection to SQLite database
+export const database = new Database('./database.db', (err) => {
+  if (err) {
+    console.error('Error connecting to database:', err.message);
+  } else {
+    console.log('Connected to the SQLite database.');
+  }
+});
+
+const db = function DatabaseTable(){
+  database.serialize(() => {
+    database.run(`
+        CREATE TABLE IF NOT EXISTS accessToken (
+            id INTEGER PRIMARY KEY,
+            accesstoken TEXT
+        )
+    `);
+  });
+}
+
+db();
 // Show routes called in console during development
 if (EnvVars.NodeEnv === NodeEnvs.Dev.valueOf()) {
   app.use(morgan('dev'))

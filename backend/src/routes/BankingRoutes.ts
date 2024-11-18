@@ -1,6 +1,9 @@
 import { IPublicToken } from '@src/models/Banking'
+import { IAccessToken } from '@src/models/AccessToken'
 import { IReq, IRes } from './types/express/misc'
 import { BankingRoutesLinkData } from '@src/Context'
+import { database } from '@src/server'
+import { RunResult } from 'sqlite3'
 const util = require('util')
 
 require('dotenv').config()
@@ -15,7 +18,6 @@ const PLAID_CLIENT_ID = process.env.PLAID_CLIENT_ID
 const PLAID_SECRET = process.env.PLAID_SECRET
 const PLAID_ENV = 'sandbox'
 
-let ACCESS_TOKEN = null
 
 // PLAID_PRODUCTS is a comma-separated list of products to use when initializing
 // Link. Note that this list must contain 'assets' in order for the app to be
@@ -71,18 +73,55 @@ async function get(_: IReq, res: IRes) {
 const prettyPrintResponse = (response: any) => {
   console.log(util.inspect(response.data, { colors: true, depth: 4 }))
 }
-// Send the Public Token to Plaid in exchange for an "Access Token"
 
+// Send the Public Token to Plaid in exchange for an "Access Token"
 async function put(req: IReq<IPublicToken>, res: IRes) {
   const tokenResponse = await client.itemPublicTokenExchange({
     public_token: req.body.publicToken,
   })
 
   prettyPrintResponse(tokenResponse)
-  ACCESS_TOKEN = tokenResponse.data.access_token
+  let access_token:string = '';
+  access_token = tokenResponse.data.access_token as string;
+  
+  database.serialize(() => {
+    database.run('DELETE FROM accessToken', function(err:Error) {
+      if (err) {
+          console.error('Error deleting rows:', err.message);
+      } else {
+          console.log('Rows deleted successfully');
+      }
+  });
+    database.run(
+        'INSERT INTO accessToken (accesstoken) VALUES (?)',
+        [access_token],
+        (err: Error) => {
+            if (err) {
+                // Handle error
+                console.log('Error occurred:', err.message);
+            } else {
+                // Insertion successful
+                console.log('AccessToken inserted successfully');
+               
+            }
+        }
+    );
+    const sqlQuery = 'SELECT * FROM accessToken';
+    database.all<IAccessToken>(sqlQuery, (err: Error | null, rows: IAccessToken[]) => {
+      if (err) {
+          // Handle query error
+          console.error('Error executing query:', err.message);
+          res.status(500).json({ error: 'Internal Server Error' });
+      } else {
+          // Send query results as JSON response
+          //res.json(rows);
+          console.log(rows);
+      }
+  });
+  });
 }
 
 export default {
   put,
-  get,
+  get
 } as const
