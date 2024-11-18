@@ -19,7 +19,6 @@ const PLAID_SECRET = process.env.PLAID_SECRET
 const PLAID_ENV = 'sandbox'
 
 
-
 // PLAID_PRODUCTS is a comma-separated list of products to use when initializing
 // Link. Note that this list must contain 'assets' in order for the app to be
 // able to create and retrieve asset reports.
